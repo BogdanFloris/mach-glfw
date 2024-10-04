@@ -33,8 +33,13 @@ pub fn build(b: *std.Build) !void {
 }
 
 comptime {
-    const supported_zig = std.SemanticVersion.parse("0.14.0-dev.1550+4fba7336a") catch unreachable;
-    if (builtin.zig_version.order(supported_zig) != .eq) {
-        @compileError(std.fmt.comptimePrint("unsupported Zig version ({}).", .{builtin.zig_version}));
+    const required_zig = "0.14.0";
+    const current_zig = builtin.zig_version;
+    const min_zig = std.SemanticVersion.parse(required_zig) catch unreachable;
+    if (current_zig.order(min_zig) == .lt) {
+        @compileError(std.fmt.comptimePrint(
+            "Your Zig version v{} does not meet the minimum build requirement of v{}",
+            .{ current_zig, min_zig },
+        ));
     }
 }
