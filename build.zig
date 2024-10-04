@@ -33,7 +33,7 @@ pub fn build(b: *std.Build) !void {
 }
 
 comptime {
-    const required_zig = "0.14.0";
+    const required_zig = "0.14.0-dev";
     const current_zig = builtin.zig_version;
     const min_zig = std.SemanticVersion.parse(required_zig) catch unreachable;
     if (current_zig.order(min_zig) == .lt) {
